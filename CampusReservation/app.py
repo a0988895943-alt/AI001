@@ -1,12 +1,18 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import sqlite3
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 app.secret_key = 'campus_reservation_secret_key'
 
 def get_db_connection():
-    conn = sqlite3.connect('database.db')
+    db_path = 'database.db'
+    db_exists = os.path.exists(db_path)
+    if not db_exists:
+        from init_db import init_db
+        init_db()
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
