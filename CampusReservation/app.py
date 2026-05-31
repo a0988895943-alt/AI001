@@ -96,10 +96,11 @@ def index():
     else:
         query += ' ORDER BY b.start_time DESC LIMIT 15'
         recent_bookings = conn.execute(query).fetchall()
-        
+    rooms = conn.execute('SELECT * FROM Room').fetchall()
+    equipments = conn.execute('SELECT * FROM Equipment').fetchall()
     conn.close()
     
-    return render_template('index.html', bookings=recent_bookings)
+    return render_template('index.html', bookings=recent_bookings, rooms=rooms, equipments=equipments)
 
 @app.route('/book')
 def book_page():
